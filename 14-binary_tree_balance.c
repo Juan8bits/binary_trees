@@ -1,27 +1,15 @@
 #include "binary_trees.h"
-
 /**
- * balance - Functiont that computes a delta for left and right.
- * @left: levels in left.
- * @right: levels in right branch.
+ * find_max - Functiont that say if a node exist.
+ * @left: number of brothers left.
+ * @right: number of brothers right.
  * Return: side with more siblings.
  */
-int balance(int left, int right)
+size_t find_max(int left, int right)
 {
-	return (right - left);
-}
-
-/**
- * find_height_left - Recursive function that count returns the length
- * of the longest branch (left) of a tree
- * @tree: Parent node.
- * Return: Heigth of single nodes plus one.
- */
-int find_height_left(const binary_tree_t *tree)
-{
-	if (!tree)
-		return (0);
-	return (find_height_left(tree->left), find_height_left(tree->right) + 1);
+	if (left >= right)
+		return (left);
+	return (right);
 }
 /**
  * find_height_right - Recursive function that count returns the length
@@ -33,7 +21,8 @@ int find_height_right(const binary_tree_t *tree)
 {
 	if (!tree)
 		return (0);
-	return (find_height_right(tree->right), find_height_right(tree->left) + 1);
+	return (find_max(find_height_right(tree->left),
+			 find_height_right(tree->right)) + 1);
 }
 /**
  * binary_tree_balance - Function that measures the balance factor
@@ -47,6 +36,6 @@ int binary_tree_balance(const binary_tree_t *tree)
 
 	if (!tree)
 		return (0);
-	res = balance(find_height_left(tree), find_height_right(tree));
+	res = (find_height_right(tree->left) - find_height_right(tree->right));
 	return (res);
 }
