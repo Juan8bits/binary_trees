@@ -1,29 +1,19 @@
 #include "binary_trees.h"
 /**
- * find_max - Functiont that say if a node exist.
- * @left: number of brothers left.
- * @right: number of brothers right.
- * Return: side with more siblings.
+ * Depth - Function that measures the depth of a node in
+ * a binary tree
+ * @tree: Is a pointer to the node to measure the depth.
+ * Return: Level of tree.
  */
-size_t find_max(int left, int right)
+size_t Depth(const binary_tree_t *tree)
 {
-	if (left >= right)
-		return (left);
-	return (right);
-}
+	size_t c;
 
-/**
- * find_height - Recursive function that count returns the length
- * of the longest branch of a tree
- * @tree: Parent node.
- * Return: Heigth of single nodes plus one.
- */
-size_t find_height(const binary_tree_t *tree)
-{
 	if (!tree)
 		return (0);
-	return (find_max(find_height(tree->left),
-			 find_height(tree->right)) + 1);
+	for (c = 0; tree; c++)
+		tree = tree->left;
+	return (c);
 }
 /**
  * is_perfect - Function that checks if a binary tree is perfect.
@@ -34,12 +24,10 @@ size_t find_height(const binary_tree_t *tree)
  */
 int is_perfect(const binary_tree_t *tree, int d, int level)
 {
-	if (!tree)
-		return (0);
 	if (!tree->left && !tree->right)
 		return (d == level + 1);
 	if (!tree->left || !tree->right)
-		return (1);
+		return (0);
 	return (is_perfect(tree->left, d, level + 1) &&
 		is_perfect(tree->right, d, level + 1));
 }
@@ -52,6 +40,9 @@ int binary_tree_is_perfect(const binary_tree_t *tree)
 {
 	int leng;
 
-	leng = find_height(tree);
+	if (!tree)
+		return (0);
+
+	leng = Depth(tree);
 	return (is_perfect(tree, leng, 0));
 }
